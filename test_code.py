@@ -1,3 +1,4 @@
+'''
 import mysql.connector as con
 
 mydb = con.connect(
@@ -10,13 +11,15 @@ print(mydb)
 print()
 print()
 
+'''
+
 from des import DesKey
 import hashlib
 
 masterkey = "demo4master8key1"
 userid = "shashankh.s22@gmail.com"
 
-
+'''
 masterhash = hashlib.sha256(masterkey.encode())
 userhash = hashlib.sha256(userid.encode())
 print('To be checked with DB:')
@@ -24,9 +27,7 @@ print(masterhash.hexdigest())
 print(userhash.hexdigest())
 print()
 print()
-
-
-
+'''
 
 masterpass = hashlib.shake_256(masterkey.encode())
 userpass = hashlib.shake_256(userid.encode())
@@ -54,9 +55,23 @@ print('After encryption')
 print(cipher)
 print()
 
-plain = masterpass.decrypt(cipher, padding = True)
+cipher1 = ''
+for i in cipher:
+	cipher1 = cipher1 + format(i, '02x')
+print("Store in DB as:")
+print(cipher1)
+print()
+
+cipher2 = bytes.fromhex(cipher1)
+print("Use for decrypt as: ")
+print(cipher2)
+print()
+
+
+plain = masterpass.decrypt(cipher2, padding = True)
 plain = userpass.decrypt(plain, padding = True)
 plain = masterpass.decrypt(plain, padding = True)
 
 print('After decryption')
+print(plain)
 print(plain.decode())

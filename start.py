@@ -8,6 +8,7 @@ def login():
     print("Enter your mater key:")
     mkey = input()
     mkeyhash = hashlib.sha256(mkey.encode())
+    masterpass = hashlib.shake_256(mkey.encode())
     cn = connector()
     cur = cn.cursor()
     query = "SELECT id FROM tbl_users WHERE master_hash = \'" + mkeyhash.hexdigest() +"\' and username = \'" + name +"\'"
@@ -17,7 +18,7 @@ def login():
     if(len(res) == 0):
         print("Invalid credentials entered")
     else:
-        session_start(res[0][0])
+        session_start(res[0][0], masterpass)
 
 
 def register():
