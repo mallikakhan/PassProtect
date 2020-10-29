@@ -16,7 +16,7 @@ def session_start(id, masterpass):
     elif(i == 2):
         add(id, masterpass)
     elif(i == 3):
-        rem(id)
+        rem(id, masterpass)
     elif(i == 4):
         mod(id)
     elif(i == 5):
@@ -63,7 +63,7 @@ def cryptocheck(id, acc_id, masterpass):
         print("Invalid username entered\n\n")
         session_start(id, masterpass)
     else:
-        print(decrypt(masterpass, username, res[0][0]), end='\n\n\n')
+        print("Password:  " + decrypt(masterpass, username, res[0][0]), end='\n\n\n')
 
 def decrypt(masterpass, userid, cipher):
     # masterpass = hashlib.shake_256(masterkey.encode())
@@ -120,3 +120,33 @@ def add(id, masterpass):
     cn.commit()
     cn.close()
     session_start(id, masterpass)
+
+def rem(id, masterpass):
+    cn = connector()
+    cur = cn.cursor()
+    query = "SELECT acc_id, website_name FROM tbl_cryptostore WHERE id = \'" + str(id) +"\'"
+    cur.execute(query)
+    res = cur.fetchall()
+    cn.close()
+    if(len(res) == 0):
+        print("No passwords stored yet", end='\n\n')
+        session_start(id, masterpass)
+    else:
+        print("\nAvailable Accounts:")
+        for i in range(len(res)):
+            print(str(i + 1) + " " + str(res[i][1]))
+        i = int(input())
+        i = i - 1
+        if(i >= len(res)):
+            print("Wrong Option")
+            access(id)
+        else:
+            acc_id = res[i][0]
+            query = "DELETE FROM tbl_cryptostore WHERE acc_id = "+ str(acc_id)
+            cn = connector()
+            cur = cn.cursor()
+            cur.execute(query)
+            cn.commit()
+            cn.close()
+        print("\n\n\n")
+        session_start(id, masterpass)
