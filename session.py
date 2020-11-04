@@ -6,8 +6,7 @@ def session_start(id, masterpass):
     print("1. Access Password")
     print("2. Add Password")
     print("3. Delete Password")
-    print("4. Modify Password")
-    print("5. Logout")
+    print("4. Logout")
     i = int(input("Enter choice: "))
     print("\n\n")
 
@@ -18,9 +17,7 @@ def session_start(id, masterpass):
     elif(i == 3):
         rem(id, masterpass)
     elif(i == 4):
-        mod(id)
-    elif(i == 5):
-        None
+        return
     else:
         print("Wrong input")
         session_start(id, masterpass)
