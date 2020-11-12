@@ -1,14 +1,19 @@
 from connect import connector
 import hashlib
+import string
+import random
 from des import DesKey
+import os
+from time import sleep
 
 def session_start(id, masterpass):
+    os.system('CLS')
     print("1. Access Password")
     print("2. Add Password")
     print("3. Delete Password")
-    print("4. Logout")
+    print("4. Exit")
     i = int(input("Enter choice: "))
-    print("\n\n")
+    print("\n")
 
     if(i == 1):
         access(id, masterpass)
@@ -17,9 +22,10 @@ def session_start(id, masterpass):
     elif(i == 3):
         rem(id, masterpass)
     elif(i == 4):
-        return
+        exit()
     else:
         print("Wrong input")
+        a = input("Press enter to continue")
         session_start(id, masterpass)
 
 def access(id, masterpass):
@@ -31,6 +37,7 @@ def access(id, masterpass):
     cn.close()
     if(len(res) == 0):
         print("No passwords stored yet", end='\n\n')
+        a = input("Press enter to continue")
         session_start(id, masterpass)
     else:
         print("\nAvailable Accounts:")
@@ -40,7 +47,7 @@ def access(id, masterpass):
         i = i - 1
         if(i >= len(res)):
             print("Wrong Option")
-            access(id)
+            a = input("Press enter to continue")
         else:
             acc_id = res[i][0]
             cryptocheck(id, acc_id, masterpass)
@@ -58,9 +65,11 @@ def cryptocheck(id, acc_id, masterpass):
     cn.close()
     if(len(res) <= 0):
         print("Invalid username entered\n\n")
+        sleep(2)
         session_start(id, masterpass)
     else:
         print("Password:  " + decrypt(masterpass, username, res[0][0]), end='\n\n\n')
+        a = input("Press enter to continue")
 
 def decrypt(masterpass, userid, cipher):
     # masterpass = hashlib.shake_256(masterkey.encode())
@@ -107,6 +116,7 @@ def encrypt(masterpass, userid, plain):
 def add(id, masterpass):
     web = input("Enter website name: ")
     username = input("Enter username or email id used for this website: ")
+    passGen(random.randint(10,14))
     password = input("Enter password used for this website: ")
     crypto_pass = encrypt(masterpass, username, password)
     userid_hash = hashlib.sha256(username.encode())
@@ -116,6 +126,8 @@ def add(id, masterpass):
     cur.execute(query)
     cn.commit()
     cn.close()
+    print("Done...")
+    a = input("Press enter to continue")
     session_start(id, masterpass)
 
 def rem(id, masterpass):
@@ -136,7 +148,6 @@ def rem(id, masterpass):
         i = i - 1
         if(i >= len(res)):
             print("Wrong Option")
-            access(id)
         else:
             acc_id = res[i][0]
             query = "DELETE FROM tbl_cryptostore WHERE acc_id = "+ str(acc_id)
@@ -145,5 +156,11 @@ def rem(id, masterpass):
             cur.execute(query)
             cn.commit()
             cn.close()
-        print("\n\n\n")
+        a = input("Press enter to continue")
         session_start(id, masterpass)
+
+
+def passGen(size):
+    sample = string.ascii_letters + string.digits + '!@#$%^&*-_+=?><'
+    passwd = ''.join((random.choice(sample) for i in range(size)))
+    print("Suggested Password: " + passwd)
