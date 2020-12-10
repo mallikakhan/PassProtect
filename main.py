@@ -1,4 +1,12 @@
 from start import *
+<<<<<<< HEAD
+from tkinter import *
+import tkinter.messagebox
+
+
+
+
+=======
 import os
 from time import sleep
 
@@ -16,3 +24,4 @@ def main():
     	else:
     		exit()
 main()
+>>>>>>> 3584a0ec3a744c24353f49d22e5e637bbc0011f5
