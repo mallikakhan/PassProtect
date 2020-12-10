@@ -1,13 +1,8 @@
-import mysql.connector as con
+import mysql.connector
+
 
 def connector():
-    mydb = con.connect(
-    	host = 'localhost',
-    	user = 'root',
-    	passwd = 'info9crypt1',
-        database = 'PassProtect'
-    )
-
-    return mydb
+    mydb = mysql.connector.connect(host="localhost", user="root", password="mumu2000", database="passprotect")
+    return(mydb)
 
 # print(connector())
