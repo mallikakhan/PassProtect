@@ -1,7 +1,6 @@
 from session import *
 from connect import *
 import hashlib
-<<<<<<< HEAD
 from tkinter import *
 import tkinter.messagebox
 
@@ -160,53 +159,14 @@ def registration():
     txmkey = tmkey.get()
     tmkeyhash = hashlib.sha256(txmkey.encode())
     if len(txmkey) >= 8:
-=======
-import os
-from time import sleep
-
-def login():
-    print("USER LOGIN")
-    print("Enter your name:")
-    name = input().lower()
-    print("Enter your mater key:")
-    mkey = input()
-    mkeyhash = hashlib.sha256(mkey.encode())
-    masterpass = hashlib.shake_256(mkey.encode())
-    cn = connector()
-    cur = cn.cursor()
-    query = "SELECT id FROM tbl_users WHERE master_hash = \'" + mkeyhash.hexdigest() +"\' and username = \'" + name +"\'"
-    cur.execute(query)
-    res = cur.fetchall()
-    cn.close()
-    if(len(res) == 0):
-        print("Invalid credentials entered...")
-        a = input("Press enter to continue")
-        os.system('CLS')
-    else:
-        os.system('CLS')
-        session_start(res[0][0], masterpass)
-
-
-def register():
-    print("USER REGISTRATION")
-    print("Enter your name:")
-    tname = input().lower()
-    print("Enter a masterkey you would like to use: (Should be atleast 8 characters long)")
-    tmkey = input()
-    tmkeyhash = hashlib.sha256(tmkey.encode())
-    if(len(tmkey) >= 8):
-        query = "INSERT INTO tbl_users(master_hash, username) values(\'"+tmkeyhash.hexdigest()+"\',\'"+tname+"\')"
->>>>>>> 3584a0ec3a744c24353f49d22e5e637bbc0011f5
         cn = connector()
         cur = cn.cursor()
         query = "INSERT INTO tbl_users(master_hash, username) values(\'" + tmkeyhash.hexdigest() + "\',\'" + txname + "\')"
         cur.execute(query)
         cn.commit()
         cn.close()
-        os.system('CLS')
         login()
     else:
-<<<<<<< HEAD
         failed_password()
 
 
@@ -323,7 +283,7 @@ def rem():
         #query_label = Label(root6, text=print_tuple)
 
         # query_label.grid(row=2, column=0, columnspan=2)
-    
+
         for re in res:
             for j in range(len(res)):
                 Label(root6, text=res[i])
@@ -331,7 +291,7 @@ def rem():
             # print(str(i + 1) + " " + str(res[i][1]))
         # i = int(input())
         '''
-        i=i+1
+        i = i + 1
         l2 = Label(root6, text="Device to be removed", fg="black", font=('arial', 12, 'bold'))
         l2.grid(row=i, column=0)
         e1 = Entry(root6, textvariable=device_tobe_removed)
@@ -345,6 +305,7 @@ def rem():
     else:
         failed_removal()
 
+
 def successful_add():
     global success_add
     success_add = Toplevel(root5)
@@ -354,6 +315,7 @@ def successful_add():
     Label(success_add, text="").pack()
     Button(success_add, text="Close", bg="blue", fg="white", relief="groove", font=('ariel', 12, 'bold'),
            command=success_add_destroy).pack()
+
 
 def success_add_destroy():
     success_add.destroy()
@@ -544,7 +506,6 @@ def access():
                 e.grid(row=i, column=0)
                 e.insert(END, p)
 
-
             i = i + 1
 
         '''
@@ -554,7 +515,6 @@ def access():
     '''
     else:
         failed_access()
-
 
 
 # main driver
@@ -588,9 +548,3 @@ def main():
 
 main()
 root.mainloop()
-=======
-        print("Please make sure it is atleast 8 characters long...")
-        a = input("Press enter to continue")
-        os.system('CLS')
-        register()
->>>>>>> 3584a0ec3a744c24353f49d22e5e637bbc0011f5
